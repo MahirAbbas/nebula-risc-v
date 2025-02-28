@@ -17,6 +17,7 @@ import spinal.lib.misc.pipeline._
 //   val setIndexRange = (setIndexWidth + 1 downto 2)
 //   val tagWidth = addressWidth - setIndexWidth - byteOffset
 //   val tagRange = 63 downto setIndexWidth + byteOffset
+//   i
 
 //   val l1bus = new ICacheBus() // Reused the same interface for simplicity
 //   // val ramBus = new ramBus()
