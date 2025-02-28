@@ -63,13 +63,12 @@ case class SrcPlugin(stage : CtrlLink) extends Area {
     sext.assignDontCare()
     val imm = new IMM(nebula.decode.Decoder.INSTRUCTION)
     when(up.isFiring) {
-      sext := up(IMMSEL).mux(
+      sext := up(IMMSEL).muxDc(
         Imm_Select.I_IMM -> imm.i_sext,
         Imm_Select.S_IMM -> imm.s_sext,
         Imm_Select.B_IMM -> imm.b_sext,
         Imm_Select.U_IMM -> imm.u_sext,
         Imm_Select.J_IMM -> imm.j_sext,
-        default -> imm.i_sext
       ).asBits
     }
     
@@ -77,14 +76,12 @@ case class SrcPlugin(stage : CtrlLink) extends Area {
     RS2.assignDontCare()
     IMMED.assignDontCare()
     when(up.isFiring) {
-      down(RS1) := up(nebula.decode.Decoder.RS1TYPE).mux(
+      down(RS1) := up(nebula.decode.Decoder.RS1TYPE).muxDc(
         nebula.decode.REGFILE.RSTYPE.RS_INT -> IntRegFile.RegFile_RS1.asBits,
-        default -> B(0).resize(64)
       )
-      down(RS2) := up(nebula.decode.Decoder.RS2TYPE).mux(
+      down(RS2) := up(nebula.decode.Decoder.RS2TYPE).muxDc(
         nebula.decode.REGFILE.RSTYPE.IMMED  -> sext,
         nebula.decode.REGFILE.RSTYPE.RS_INT -> IntRegFile.RegFile_RS2.asBits,
-        default -> B(0).resize(64)
       )
       down(IMMED) := sext
     }
@@ -92,6 +89,4 @@ case class SrcPlugin(stage : CtrlLink) extends Area {
 
   }
 
-  val selectRS = new stage.Area {
-  }
 }
